@@ -1,0 +1,340 @@
+﻿@{
+    ViewData["Title"] = "Thêm mới sản phẩm";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@{
+    var lstCate = ViewBag.Cate as List<WebApp.Entities.CategoryProduct>;
+    var lstBr = ViewBag.lstBr as List<WebApp.Entities.Brand>;
+    var lstCpn = ViewBag.lstCpn as List<WebApp.Entities.Company>;
+}
+
+<div class="col-lg-12">
+  
+    <div class="card">
+        <div class="card-body">
+            <h4 class="widgettitle">Cập nhật thông tin Sản phẩm</h4>
+            <div class="widgetcontent">
+                <div class="form-horizontal">
+                    <!-- Horizontal Form -->
+                    <form id="form_pd" action="/Product/Add" method="post" enctype="multipart/form-data">
+                        <div class="row mb-3">
+                            <label for="ma_pb" class="col-sm-2 control-label">Loại sản phẩm <span style="color:red">(*)</span></label>
+                            <div class="col-sm-8">
+                                <select class="form-control input-default" id="LoaiSanPham" name="LoaiSanPham">
+                                    <option value="0">Chọn loại sản phẩm</option>
+                                    @if(lstCate != null)
+                                    {
+                                        @foreach(var item in lstCate)
+                                        {
+                                            <option value="@item.Id">@item.Name</option>
+                                        }
+                                    }
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <label for="ma_pb" class="col-sm-2 control-label"> Thương Hiệu <span style="color:red">(*)</span></label>
+                            <div class="col-sm-8">
+                                <select class="form-control input-default" id="ThuongHieu" name="ThuongHieu">
+                                    <option value="0">Chọn thương hiệu</option>
+                                    @if (lstBr != null)
+                                    {
+                                        @foreach (var item in lstBr)
+                                        {
+                                            <option value="@item.Id">@item.Name</option>
+                                        }
+                                    }
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <label for="ten_pb" class="col-sm-2 control-label">Nhà cung cấp <span style="color:red">(*)</span></label>
+                            <div class="col-sm-8">
+                                <select class="form-control input-default" id="NhaCungCap" name="NhaCungCap">
+                                    <option value="0">Chọn nhà cung cấp</option>
+                                    @if (lstCpn != null)
+                                    {
+                                        @foreach (var item in lstCpn)
+                                        {
+                                            <option value="@item.Id">@item.Name</option>
+                                        }
+                                    }
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <label for="ten_pb" class="col-sm-2 control-label">Đường dẫn Seo <span style="color:red">(*)</span></label>
+                            <div class="col-sm-8">
+                                <input type="text" class="form-control input-default" placeholder="Đường dẫn sản phẩm" maxlength="100" name="Seo" id="Seo" value="">
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <label for="ten_pb" class="col-sm-2 control-label">Mã sản phẩm <span style="color:red">(*)</span></label>
+                            <div class="col-sm-8">
+                                <input type="text" class="form-control input-default" placeholder="Tên trang" maxlength="100" id="Code" name="Code" value="">
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <label for="ten_pb" class="col-sm-2 control-label">Giá hiện tại sản phẩm </label>
+                            <div class="col-sm-8">
+                                <input type="text" class="form-control input-default" placeholder="Giá sản phẩm" maxlength="100" name="Price" id="Price" value="0">
+                            </div>
+                        </div>   <div class="row mb-3">
+                            <label for="ten_pb" class="col-sm-2 control-label">Giá cũ sản phẩm </label>
+                            <div class="col-sm-8">
+                                <input type="number" class="form-control input-default" placeholder="Tên trang" maxlength="100" name="PriceOld" id="PriceOld" value="">
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <label for="ten_pb" class="col-sm-2 control-label">Mô tả </label>
+                            <div class="col-sm-8">
+                                <textarea placeholder="Tên trang" maxlength="100" id="Description" name="Description" value=""></textarea>
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <label for="ten_pb" class="col-sm-2 control-label">Ẩn Hiện sản phẩm </label>
+                            <div class="col-sm-8">
+                                <select class="form-control input-default" id="Status" name="Status">
+                                    <option value="1">Ẩn</option>
+                                    <option value="0">Hiện</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <label for="ten_pb" class="col-sm-2 control-label">SaleOFF </label>
+                            <div class="col-sm-8">
+                                <input type="number" class="form-control input-default" placeholder="Giảm giá" maxlength="100" name="SaleOff" id="SaleOff" min="0" value="0">
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <label for="ten_pb" class="col-sm-2 control-label">Hình ảnh đại diện sản phẩm <span style="color:red">(*)</span></label>
+                            <div class="col-sm-8">
+
+                                <img src="" id="anhdaidien" name="anhdaidien" width="50" height="80" />
+                                <input type="file" id="AnhDaiDien" name="AnhDaiDien" style="display: none">
+                                <input type="text" id="file_anhdaidien" name="file_anhdaidien" style="display: none">
+                                <button type="button" onclick="$('#files5').click();" class="btn btn-default"><i class="glyphicon glyphicon-folder-open"></i>&nbsp;&nbsp;Chọn File</button>
+
+
+                                <img src="" id="anh1" name="anh1" width="50" height="80" />
+                                <input type="file" id="filesanh1" name="filesanh1" style="display: none">
+                                <input type="text" id="file_anh1" name="file_anh1" style="display: none">
+                                <button type="button" onclick="$('#filesanh1').click();" class="btn btn-default"><i class="glyphicon glyphicon-folder-open"></i>&nbsp;&nbsp;Chọn File</button>
+
+
+                                <img src="" id="anh2" name="anh2" width="50" height="80" />
+                                <input type="file" id="fileanh2" name="fileanh2" style="display: none">
+                                <input type="text" id="file_anh2" name="file_anh2" style="display: none">
+                                <button type="button" onclick="$('#fileanh2').click();" class="btn btn-default"><i class="glyphicon glyphicon-folder-open"></i>&nbsp;&nbsp;Chọn File</button>
+
+
+                                
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <label for="nguoi_sua" class="col-sm-2 control-label">Người sửa</label>
+                            <div class="col-sm-8">
+                                <input disabled type="text" class="form-control input-default" value="">
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <label for="ngay_sua" class="col-sm-2 control-label">Ngày sửa</label>
+                            <div class="col-sm-8">
+                                <input disabled type="text" class="form-control input-default" value="">
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <label for="ngay_tao" class="col-sm-2 control-label">Ngày tạo</label>
+                            <div class="col-sm-8">
+                                <input disabled type="text" class="form-control input-default" value="">
+                            </div>
+                        </div>
+
+                        <div class="text-center">
+                            <button type="submit" class="btn btn-primary">Lưu</button>
+                            <button type="button" class="btn btn-secondary" onclick="window.location.href='/Product/Index';">Đóng</button>
+                        </div>
+                    </form><!-- End Horizontal Form -->
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Basic Modal -->
+<script>
+    CKEDITOR.replace('Description');
+    $(document).ready(function () {
+
+        $('#form_pd').validate({
+            rules: {
+                Name: "required",
+                Url: "required",
+                Price: "required",
+                Code: "required"
+            },
+            messages: {
+                Name: "Bạn cần nhập tên sản phẩm!",
+                Url: "Bạn cần nhập Seo sản phẩm!",
+                Price: "Bạn cần nhập giá sản phẩm!",
+                Code: "Bạn cần nhập mã sản phẩm!"
+
+            }
+        });
+
+    });
+    $("#AnhDaiDien").on('change', function () {
+        if (window.FormData !== undefined) {
+            var fileUpload = $(this).get(0);
+            var files = fileUpload.files;
+            // Create FormData object
+            var fileData = new FormData();
+            // Looping over all files and add it to FormData object
+            for (var i = 0; i < files.length; i++) {
+                fileData.append(files[i].name, files[i]);
+            }
+            if (files[0].size > 31457280) {
+                alert("File tải lên không vượt quá 5MB");
+                return;
+            }
+            // Adding one more key to FormData object
+            fileData.append('username', 'Manas');
+            $.ajax({
+                url: '/Upload/UploadFiles?folder=Avatar',
+                type: "POST",
+                contentType: false, // Not to set any content header
+                processData: false, // Not to process data
+                data: fileData,
+                success: function (result) {
+                    console.log(result);
+                    for (var i = 0; i < result.files.length; i++) {
+                        $('#file_anhdaidien').attr('value', result.files[i]);
+                        $('#anhdaidien').attr('src', result.files[i]);
+                    }
+                },
+                error: function (err) {
+                    alert(err.statusText);
+                }
+            });
+        } else {
+            alert("FormData is not supported.");
+        }
+    });
+    $("#filesanh1").on('change', function () {
+        debugger
+        if (window.FormData !== undefined) {
+            var fileUpload = $(this).get(0);
+            var files = fileUpload.files;
+            // Create FormData object
+            var fileData = new FormData();
+            // Looping over all files and add it to FormData object
+            for (var i = 0; i < files.length; i++) {
+                fileData.append(files[i].name, files[i]);
+            }
+            if (files[0].size > 31457280) {
+                alert("File tải lên không vượt quá 5MB");
+                return;
+            }
+            // Adding one more key to FormData object
+            fileData.append('username', 'Manas');
+            $.ajax({
+                url: '/Upload/UploadFiles?folder=IMGProduct',
+                type: "POST",
+                contentType: false, // Not to set any content header
+                processData: false, // Not to process data
+                data: fileData,
+                success: function (result) {
+                    console.log(result);
+                    for (var i = 0; i < result.files.length; i++) {
+                        $('#file_anh1').attr('value', result.files[i]);
+                        $('#anh1').attr('src', result.files[i]);
+                        //$('#namefile5').html("" + result.names + "");
+                    }
+                },
+                error: function (err) {
+                    alert(err.statusText);
+                }
+            });
+        } else {
+            alert("FormData is not supported.");
+        }
+    });
+    $("#fileanh2").on('change', function () {
+        if (window.FormData !== undefined) {
+            var fileUpload = $(this).get(0);
+            var files = fileUpload.files;
+            // Create FormData object
+            var fileData = new FormData();
+            // Looping over all files and add it to FormData object
+            for (var i = 0; i < files.length; i++) {
+                fileData.append(files[i].name, files[i]);
+            }
+            if (files[0].size > 31457280) {
+                alert("File tải lên không vượt quá 5MB");
+                return;
+            }
+            // Adding one more key to FormData object
+            fileData.append('username', 'Manas');
+            $.ajax({
+                url: '/Upload/UploadFiles?folder=IMGProduct',
+                type: "POST",
+                contentType: false, // Not to set any content header
+                processData: false, // Not to process data
+                data: fileData,
+                success: function (result) {
+                    console.log(result);
+                    for (var i = 0; i < result.files.length; i++) {
+                        $('#file_anh2').attr('value', result.files[i]);
+                        $('#anh2').attr('src', result.files[i]);
+                        //$('#namefile5').html("" + result.names + "");
+                    }
+                },
+                error: function (err) {
+                    alert(err.statusText);
+                }
+            });
+        } else {
+            alert("FormData is not supported.");
+        }
+    });
+    $("#fileanh3").on('change', function () {
+        if (window.FormData !== undefined) {
+            var fileUpload = $(this).get(0);
+            var files = fileUpload.files;
+            // Create FormData object
+            var fileData = new FormData();
+            // Looping over all files and add it to FormData object
+            for (var i = 0; i < files.length; i++) {
+                fileData.append(files[i].name, files[i]);
+            }
+            if (files[0].size > 31457280) {
+                alert("File tải lên không vượt quá 5MB");
+                return;
+            }
+            // Adding one more key to FormData object
+            fileData.append('username', 'Manas');
+            $.ajax({
+                url: '/Upload/UploadFiles?folder=IMGProduct',
+                type: "POST",
+                contentType: false, // Not to set any content header
+                processData: false, // Not to process data
+                data: fileData,
+                success: function (result) {
+                    console.log(result);
+                    for (var i = 0; i < result.files.length; i++) {
+                        $('#file_anh3').attr('value', result.files[i]);
+                        $('#anh3').attr('src', result.files[i]);
+                    }
+                },
+                error: function (err) {
+                    alert(err.statusText);
+                }
+            });
+        } else {
+            alert("FormData is not supported.");
+        }
+    });
+
+   
+</script>
+

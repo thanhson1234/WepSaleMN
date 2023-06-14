@@ -1,0 +1,74 @@
+﻿@model List<WebApp.Entities.Company>
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<style>
+    .tuchinhtxtsert{
+        display: block;
+        width: 100%;
+        padding: 0.375rem 0.75rem;
+        font-size: 1rem;
+        font-weight: 400;
+        line-height: 1.5;
+        color: #212529;
+        background-color: #fff;
+        background-clip: padding-box;
+    }
+</style>
+<div class="card-body">
+    <h5 class="card-title">Danh sách nhà sản xuất</h5>
+    @*@using (Html.BeginForm("Index", "Home", FormMethod.Get, new { @class = "search-form d-flex align-items-center" }))
+    {   
+
+        <input name="timkiemtheoten"  type="text" id="timkiemtheoten" value="@ViewBag.txtSearch" placeholder="Gõ từ khóa và nhấn enter..." />
+        <button b-7882z672yd="" type="submit" title="Search"><i b-7882z672yd="" class="bi bi-search"></i></button>
+    }*@
+    <div b-7882z672yd="" class="search-bar">
+        
+        @using (Html.BeginForm("Index", "Home", FormMethod.Get, new { @class = "search-form d-flex align-items-center" }))
+        {
+            <input name="timkiemtheoten"  type="text" id="timkiemtheoten" value="@ViewBag.txtSearch" placeholder="Gõ từ khóa và nhấn enter..." />
+            <button b-7882z672yd="" type="submit" title="Search"><i b-7882z672yd="" class="bi bi-search"></i></button>
+        }
+    </div>
+    <!-- Table with stripped rows -->
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Tên công ty</th>
+                <th scope="col">Position</th>
+                <th scope="col">Age</th>
+                <th scope="col">Ngày thành lập</th>
+            </tr>
+        </thead>
+        <tbody>
+           
+            @{
+                int stt = 1;
+                foreach(var item in Model)
+                {
+                    <tr>
+                        <th scope="row">@stt</th>
+                        <td>@item.Name</td>
+                        <td>Designer</td>
+                        <td>28</td>
+                        <td>@item.CreatedDateUtc</td>
+                    </tr>
+                    stt++;
+                }
+            }
+        </tbody>
+    </table>
+    <nav aria-label="Page navigation example">
+        <ul class="pagination">
+            <li class="page-item"><a class="page-link" href="#">Previous</a></li>
+            <li class="page-item"><a class="page-link" href="#">1</a></li>
+            <li class="page-item"><a class="page-link" href="#">2</a></li>
+            <li class="page-item"><a class="page-link" href="#">3</a></li>
+            <li class="page-item"><a class="page-link" href="#">Next</a></li>
+        </ul>
+    </nav>
+    <!-- End Table with stripped rows -->
+
+</div>

@@ -1,0 +1,37 @@
+﻿@model List<WebApp.Entities.AspNetRoles>
+@if (Model != null)
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">STT</th>
+                <th scope="col">Chức Vụ</th>
+                <th scope="col">Ngày Tạo</th>
+                <th scope="col">Ngày Sửa</th>
+            </tr>
+        </thead>
+        <tbody>
+            @{
+                var stt = 1 + (int)ViewBag.Stt;
+                foreach (var item in Model)
+                {
+                    <tr>
+                        <th scope="row">@stt</th>
+                        <td><a href="/Roles/Edit?Id=@item.Id">@item.Name</a></td>
+                        <td>@item.CreatedDateUtc</td>
+                        <td>@item.UpdatedDateUtc</td>
+
+                    </tr>
+                    stt++;
+                }
+
+            }
+
+        </tbody>
+    </table>
+}
+@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}

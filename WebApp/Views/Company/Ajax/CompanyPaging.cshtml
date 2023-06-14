@@ -1,0 +1,98 @@
+﻿@model List<WebApp.Entities.Company>
+<h5 class="card-title">Default Table</h5>
+@if(Model != null)
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">Id</th>
+                <th scope="col">Name</th>
+                <th scope="col">Evaluate</th>
+                <th scope="col">Adress</th>
+                <th scope="col">Start Date</th>
+            </tr>
+        </thead>
+        <tbody>
+            @{
+                var stt = 1 + (int)ViewBag.Stt;
+                foreach (var item in Model)
+                {
+                    <tr>
+                        <th scope="row">@stt</th>
+                        <td><a href="/Company/Edit?Id=@item.Id">@item.Name</a></td>
+                        <td>@item.Evaluate</td>
+                        <td>@item.ProvinceId</td>
+                        <td>@item.CreatedDateUtc</td>
+                    </tr>
+                    stt++;
+                }
+
+            }
+
+        </tbody>
+    </table>
+    <div class="dataTables_info" id="dyntable_info">Hiển thị @ViewBag.RecoredFrom đến  @ViewBag.RecoredTo của @ViewBag.TotalRecored bản ghi</div>
+    <div class="dataTables_paginate paging_full_numbers" id="dyntable_paginate">
+        @{
+            var TotalPage = (int)ViewBag.TotalPage;
+            var CurrentPage = (int)ViewBag.CurrentPage;
+            if (TotalPage > 5)   // nếu số trang lớn hơn 5 thì sẽ thực hiện
+            {
+                if (CurrentPage > CurrentPage + 2)
+                {
+                    <span><a class="first paginate_button paginate_button_disabled" onclick="GetListByCurrentPage(1)">Đầu</a></span>
+                    <span><a class="first paginate_button paginate_button_disabled" onclick="GetListByCurrentPage(@CurrentPage - 1)">Trước</a></span>
+                };
+                if (CurrentPage > 3)
+                {
+                    for (int i = CurrentPage - 2; i < CurrentPage + 2; i++)
+                    {
+                        if (i == CurrentPage)
+                        {
+                            <span><a tabindex="0" class="active paginate_active" style="cursor:pointer" onclick="GetListByCurrentPage(@i)">@i</a></span>
+                        }
+                        else
+                        {
+                            <span><a tabindex="0" class=" paginate_active" style="cursor:pointer" onclick="GetListByCurrentPage(@i)">@i</a></span>
+                        }
+                    }
+                }
+                else
+                {
+                    for (int i = 1; i <= 5; i++)
+                    {
+                        if (i == CurrentPage)
+                        {
+                            <span><a tabindex="0" class="active paginate_active" style="cursor:pointer" onclick="GetListByCurrentPage(@i)">@i</a></span>
+                        }
+                        else
+                        {
+                            <span><a tabindex="0" class=" paginate_active" style="cursor:pointer" onclick="GetListByCurrentPage(@i)">@i</a></span>
+                        }
+                    }
+
+                }
+
+                if (CurrentPage < CurrentPage + 2)
+                {
+                    <span> <a class="first paginate_button paginate_button_disabled" onclick="GetListByCurrentPage(@CurrentPage + 1)">Trước</a></span>
+                    <span><a class="first paginate_button paginate_button_disabled" onclick="GetListByCurrentPage(@TotalPage)">Cuối</a></span>
+                };
+            }
+            else
+            {
+                for (int i = 1; i <= TotalPage; i++)
+                {
+                    if (i == CurrentPage)
+                    {
+                        <span><a tabindex="0" class="active paginate_active" onclick="GetListByCurrentPage(@i)">@i</a></span>
+                    }
+                    else
+                    {
+                        <span><a tabindex="0" class=" paginate_active" onclick="GetListByCurrentPage(@i)">@i</a></span>
+                    }
+                }
+            }
+        }
+    </div>
+}

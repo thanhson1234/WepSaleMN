@@ -1,0 +1,162 @@
+﻿@model List<WebApp.Entities.AspNetRoles>
+@{
+	Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<script src="~/js/notify.min.js"></script>
+<div class="card">
+	<div class="card-body">
+		<button type="button" class="btn btn-primary" onclick="window.location.href = '/Roles/Add';" ><i class="bi bi-star me-1"></i> Thêm mới</button>
+		<button type="button" class="btn btn-primary" onclick="DeleteAll()"> <i class="bi bi-star me-1"></i> Xóa nhiều</button>
+	</div>
+</div>
+<div class="card">
+	<div b-7882z672yd="" class="search-bar">
+
+		@using (Html.BeginForm("Show", "Roles", FormMethod.Get, new { @class = "search-form d-flex align-items-center" }))
+		{
+			<input name="SearchByRoles" type="text" id="SearchByRoles" value="@ViewBag.SearchByRoles" placeholder="Gõ từ khóa và nhấn enter..." />
+			<button b-7882z672yd="" type="submit" title="Search"><i b-7882z672yd="" class="bi bi-search"></i></button>
+		}
+	</div>
+
+	<div class="card-body" id="dataTable">
+		<input hidden id="lstCode" />
+		<h2 class="card-title">Chức vụ của Tài khoản</h2>
+		<table class="table">
+			<thead>
+				<tr>
+					<th class="head0 nosort" scope="col" data-sortable="" style="width: 5%;">
+						<input type="checkbox" name="" id="selectAll" />
+					</th>
+					<th scope="col">STT</th>
+					<th scope="col">Chức Vụ</th>
+					<th scope="col">Ngày Tạo</th>
+					<th scope="col">Ngày Sửa</th>
+				</tr>
+			</thead>
+			<tbody>
+				@{
+					int stt = 1;
+					foreach (var item in Model)
+					{
+						<tr>
+							<td><input type="checkbox" class="ads_Checkbox" value="@item.Id" /></td>
+							<th scope="row">@stt</th>
+							<td><a href="/Roles/Edit?Id=@item.Id">@item.Name</a></td>
+							<td>@item.CreatedDateUtc</td>
+							<td>@item.UpdatedDateUtc</td>
+						</tr>
+						stt++;
+					}
+
+				}
+
+			</tbody>
+		</table>
+		<div class="dataTables_info" id="dyntable_info">Hiển thị @ViewBag.RecoredFrom đến  @ViewBag.RecoredTo của @ViewBag.TotalRecored bản ghi</div>
+		<div class="dataTables_paginate paging_full_numbers" id="dyntable_paginate">
+			@{
+				var TotalPage = (int)ViewBag.TotalPage;
+				var CurrentPage = (int)ViewBag.CurrentPage;
+				if (TotalPage > 5)
+				{
+					if (CurrentPage > CurrentPage + 2)
+					{
+						<span><a class="first paginate_button paginate_button_disabled" style="cursor:pointer" onclick="GetListByCurrentPage(1)">Đầu</a></span>
+						<span><a class="first paginate_button paginate_button_disabled" style="cursor:pointer" onclick="GetListByCurrentPage(@CurrentPage - 1)">Trước</a></span>
+					};
+					if (CurrentPage > 3)
+					{
+						for (int i = CurrentPage - 2; i < CurrentPage + 2; i++)
+						{
+							if (i == CurrentPage)
+							{
+								<span><a tabindex="0" class="active paginate_active" style="cursor:pointer" onclick="GetListByCurrentPage(@i)">@i</a></span>
+							}
+							else
+							{
+								<span><a tabindex="0" class=" paginate_active" style="cursor:pointer" onclick="GetListByCurrentPage(@i)">@i</a></span>
+							}
+						}
+					}
+					else
+					{
+						for (int i = 1; i <= 5; i++)
+						{
+							if (i == CurrentPage)
+							{
+								<span><a tabindex="0" class="active paginate_active" style="cursor:pointer" onclick="GetListByCurrentPage(@i)">@i</a></span>
+							}
+							else
+							{
+								<span><a tabindex="0" class=" paginate_active" style="cursor:pointer" onclick="GetListByCurrentPage(@i)">@i</a></span>
+							}
+						}
+
+					}
+
+					if (CurrentPage < CurrentPage + 2)
+					{
+						<span> <a class="first paginate_button paginate_button_disabled" onclick="GetListByCurrentPage(@CurrentPage + 1)">Trước</a></span>
+						<span><a class="first paginate_button paginate_button_disabled" onclick="GetListByCurrentPage(@TotalPage)">Cuối</a></span>
+					};
+				}
+				else
+				{
+					for (int i = 1; i <= TotalPage; i++)
+					{
+						if (i == CurrentPage)
+						{
+							<span><a tabindex="0" class="active paginate_active" onclick="GetListByCurrentPage(@i)">@i</a></span>
+						}
+						else
+						{
+							<span><a tabindex="0" class=" paginate_active" onclick="GetListByCurrentPage(@i)">@i</a></span>
+						}
+					}
+				}
+			}
+		</div>
+	</div>
+</div>
+<div class="modal fade" id="popCompany" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content" style="border: 2px solid #0866c6;">
+			<div class="modal-header" style="background-color: #0866c6;">
+				<h5 class="modal-title" style="color:white" id="exampleModalLabel">Thêm mới Chức Vụ</h5>
+			</div>
+			<div class="modal-body">
+				<div class="col-sm-8">
+					<input type="text" placeholder="Nhập chức vụ Muốn thêm" id="Name" name="Name" class="form-control input-default" />
+				</div>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-secondary modal-footer-btnclose" data-bs-dismiss="modal" >Lưu</button>
+				<button type="button" class="btn btn-secondary modal-footer-btnclose" data-bs-dismiss="modal">Đóng</button>
+			</div>
+		</div>
+	</div>
+</div>
+<script>
+	function GetListByCurrentPage(id) {
+		debugger
+		$.ajax({
+			type: "GET",
+			url: "../Roles/RolesPaging?currentPage=" + id + "&SearchByRoles=" + $("#SearchByRoles").val(),
+			data: "",
+			contentType: 'application/json; charset=utf-8',
+			success: function (data) {
+				console.log(data);
+				$("#dataTable").html(data);
+			},
+			Error: function (data) {
+				alert("Lỗi " + data);
+				console.log(data);
+			}
+		});
+	}
+	function OpenModel() {
+		$("#popCompany").modal("show");
+	}
+
+</script>

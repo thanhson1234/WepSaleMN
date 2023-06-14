@@ -1,0 +1,30 @@
+﻿   <!-- Default Table -->
+<table class="table">
+    <thead>
+        <tr>
+            <th scope="col">Id</th>
+            <th scope="col">Name</th>
+            <th scope="col">Evaluate</th>
+            <th scope="col">Adress</th>
+            <th scope="col">CreatedDateUtc</th>
+        </tr>
+    </thead>
+    <tbody>
+        @{
+            int stt = 1;
+            foreach (var item in Model)
+            {
+                <tr>
+                    <th scope="row">@stt</th>
+                    <td><a href="/Brand/Edit?Id=@item.Id">@item.Name</a></td>
+                    <td>@item.Evaluate</td>
+                    <td>@item.ProvinceId</td>
+                    <td>@item.CreatedDateUtc</td>
+                </tr>
+                stt++;
+            }
+
+        }
+
+    </tbody>
+</table>

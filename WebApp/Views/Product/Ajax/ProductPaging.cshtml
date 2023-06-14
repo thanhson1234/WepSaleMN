@@ -1,0 +1,39 @@
+﻿@model List<WebApp.Entities.Product>
+@if (Model != null)
+{
+    <table class="table" id="dataTable">
+        <thead>
+            <tr>
+                <th class="head0 nosort" scope="col" data-sortable="" style="width: 5%;">
+                    <input type="checkbox" name="" id="selectAll" />
+                </th>
+                <th scope="col">Id</th>
+                <th scope="col">Tên sản phẩm</th>
+                <th scope="col">Ảnh đại diện</th>
+                <th scope="col">Người tạo</th>
+                <th scope="col">Ngày tạo</th>
+                <th scope="col">Xóa</th>
+            </tr>
+        </thead>
+        <tbody>
+            @{
+                var stt = 1 + (int)ViewBag.Stt;
+                foreach (var item in Model)
+                {
+                    <tr>
+                        <td><input type="checkbox" class="ads_Checkbox" value="@item.Id" /></td>
+                        <th scope="row">@stt</th>
+                        <td><a href="/Product/Edit?Id=@item.Id">@item.Name</a></td>
+                        <td>@item.Price</td>
+                        <td>@item.CreatedUid</td>
+                        <td>@item.CreatedDateUtc</td>
+                        <td><a href="/Product/Delete?Id=@item.Id">Delete</a></td>
+                    </tr>
+                    stt++;
+                }
+
+            }
+
+        </tbody>
+    </table>
+}

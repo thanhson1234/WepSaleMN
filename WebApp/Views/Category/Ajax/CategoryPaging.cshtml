@@ -1,0 +1,33 @@
+﻿@model List<WebApp.Entities.CategoryProduct>
+@if (Model != null)
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">Id</th>
+                <th scope="col">Loại sản phẩm</th>
+                <th scope="col">Icon</th>
+                <th scope="col">Deleted</th>
+                <th scope="col">CreateDateUtc</th>
+            </tr>
+        </thead>
+        <tbody>
+            @{
+                var stt = 1 + (int)ViewBag.Stt;
+                foreach (var item in Model)
+                {
+                    <tr>
+                        <th scope="row">@stt</th>
+                        <td><a href="/Category/Edit?Id=@item.Id">@item.Name</a></td>
+                        <td><img src="@item.Icon" width="200px" height="100px"/></td>
+                        <td>@item.Deleted</td>
+                        <td>@item.CreatedDateUtc</td>
+                    </tr>
+                    stt++;
+                }
+
+            }
+
+        </tbody>
+    </table>
+}

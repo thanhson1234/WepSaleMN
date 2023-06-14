@@ -1,0 +1,81 @@
+﻿@model List<WebApp.Entities.AspModule>
+<aside id="sidebar" class="sidebar">
+
+    <ul class="sidebar-nav" id="sidebar-nav">
+
+        <li class="nav-item">
+            <a class="nav-link collapsed" href="index.html">
+                <i class="bi bi-grid"></i>
+                <span>Dashboard</span>
+            </a>
+        </li><!-- End Dashboard Nav -->
+
+        <li class="nav-item">
+            <a class="nav-link collapsed" data-bs-target="#components-nav" data-bs-toggle="collapse" href="#">
+                <i class="bi bi-menu-button-wide"></i><span>Quản trị hệ thống</span><i class="bi bi-chevron-down ms-auto"></i>
+            </a>
+            <ul id="components-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+                @if(Model != null)
+                {
+                    foreach (var item in Model)
+                    {
+                        <li>
+                            <a href="@item.link">
+                                <i class="bi bi-circle"></i><span>@item.Name</span>
+                            </a>
+                        </li>
+                    }
+                }
+                @* <li>
+                    <a href="/Category">
+                        <i class="bi bi-circle"></i><span>Danh sách phân loại sản phẩm</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="/Product">
+                        <i class="bi bi-circle"></i><span>Danh sách Sản phẩm</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="/Brand">
+                        <i class="bi bi-circle"></i><span>Danh sách Brand</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="/Units">
+                        <i class="bi bi-circle"></i><span>Danh sách đơn vị tính Sản phẩm</span>
+                    </a>
+                </li>*@
+               
+
+            </ul>
+        </li><!-- End Components Nav -->
+        <li class="nav-heading">Pages</li>
+        <li class="nav-item">
+            <a class="nav-link collapsed" href="/Module">
+                <i class="bi bi-person"></i>
+                <span>Danh sách chức năng </span>
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link collapsed" href="/User">
+                <i class="bi bi-person"></i>
+                <span>Danh sách Người dùng </span>
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link " href="/Contact">
+                <i class="bi bi-envelope"></i>
+                <span>Contact</span>
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link collapsed" href="Roles">
+                <i class="bi bi-file-earmark"></i>
+                <span>Roles</span>
+            </a>
+        </li>
+
+    </ul>
+
+</aside>

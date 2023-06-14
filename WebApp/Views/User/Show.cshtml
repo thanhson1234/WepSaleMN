@@ -1,0 +1,262 @@
+﻿@model List<WebApp.Entities.AspNetUsers>
+@{
+	Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<script src="~/js/notify.min.js"></script>
+<div class="card">
+	<div class="card-body">
+		<button type="button" class="btn btn-primary" onclick="DeleteAll()"> <i class="bi bi-star me-1"></i> Xóa nhiều</button>
+	</div>
+</div>
+<div class="card">
+	<div b-7882z672yd="" class="search-bar">
+
+		@using (Html.BeginForm("Show", "User", FormMethod.Get, new { @class = "search-form d-flex align-items-center" }))
+		{
+			<input name="searchByUserName" type="text" id="searchByUserName" value="@ViewBag.searchByUserName" placeholder="Gõ từ khóa và nhấn enter..." />
+			<button b-7882z672yd="" type="submit" title="Search"><i b-7882z672yd="" class="bi bi-search"></i></button>
+		}
+	</div>
+
+	<div class="card-body" id="dataTable">
+		<input hidden id="lstCode" />
+		<h3 class="card-title">Danh sách người dung</h3>
+		<table class="table">
+			<thead>
+				<tr>
+					<th class="head0 nosort" scope="col" data-sortable="" style="width: 5%;">
+						<input type="checkbox" name="" id="selectAll" />
+					</th>
+					<th scope="col">STT</th>
+					<th scope="col">Tên Người dùng</th>
+					<th scope="col">Email</th>
+					<th scope="col">Số điện thoại</th>
+					<th scope="col">Ngày lập </th>
+					<th scope="col">Ngày sửa đổi </th>
+					<th scope="col">xóa User </th>
+
+				</tr>
+			</thead>
+			<tbody>
+				@{
+					int stt = 1;
+					foreach (var item in Model)
+					{
+						<tr>
+							<td><input type="checkbox" class="ads_Checkbox" value="@item.Id" /></td>
+							<th scope="row">@stt</th>
+							<td><a href="/User/Edit?Id=@item.Id">@item.UserName</a></td>
+							<td>@item.Email</td>
+							<td>@item.PhoneNumber</td>
+							<td>@item.CreatedDateUtc</td>
+							<td>@item.UpdatedDateUtc</td>
+							<td>
+								<button class="btn btn-danger" id="deleteButton" onclick="DeleteUser(@item.Id);">Delete</button>
+							</td>
+						</tr>
+						stt++;
+					}
+
+				}
+
+			</tbody>
+		</table>
+		<div class="dataTables_info" id="dyntable_info">Hiển thị @ViewBag.RecoredFrom đến  @ViewBag.RecoredTo của @ViewBag.TotalRecored bản ghi</div>
+		<div class="dataTables_paginate paging_full_numbers" id="dyntable_paginate">
+			@{
+				var TotalPage = (int)ViewBag.TotalPage;
+				var CurrentPage = (int)ViewBag.CurrentPage;
+				if (TotalPage > 5)
+				{
+					if (CurrentPage > CurrentPage + 2)
+					{
+						<span><a class="first paginate_button paginate_button_disabled" style="cursor:pointer" onclick="GetListByCurrentPage(1)">Đầu</a></span>
+						<span><a class="first paginate_button paginate_button_disabled" style="cursor:pointer" onclick="GetListByCurrentPage(@CurrentPage - 1)">Trước</a></span>
+					};
+					if (CurrentPage > 3)
+					{
+						for (int i = CurrentPage - 2; i < CurrentPage + 2; i++)
+						{
+							if (i == CurrentPage)
+							{
+								<span><a tabindex="0" class="active paginate_active" style="cursor:pointer" onclick="GetListByCurrentPage(@i)">@i</a></span>
+							}
+							else
+							{
+								<span><a tabindex="0" class=" paginate_active" style="cursor:pointer" onclick="GetListByCurrentPage(@i)">@i</a></span>
+							}
+						}
+					}
+					else
+					{
+						for (int i = 1; i <= 5; i++)
+						{
+							if (i == CurrentPage)
+							{
+								<span><a tabindex="0" class="active paginate_active" style="cursor:pointer" onclick="GetListByCurrentPage(@i)">@i</a></span>
+							}
+							else
+							{
+								<span><a tabindex="0" class=" paginate_active" style="cursor:pointer" onclick="GetListByCurrentPage(@i)">@i</a></span>
+							}
+						}
+
+					}
+
+					if (CurrentPage < CurrentPage + 2)
+					{
+						<span> <a class="first paginate_button paginate_button_disabled" onclick="GetListByCurrentPage(@CurrentPage + 1)">Trước</a></span>
+						<span><a class="first paginate_button paginate_button_disabled" onclick="GetListByCurrentPage(@TotalPage)">Cuối</a></span>
+					};
+				}
+				else
+				{
+					for (int i = 1; i <= TotalPage; i++)
+					{
+						if (i == CurrentPage)
+						{
+							<span><a tabindex="0" class="active paginate_active" onclick="GetListByCurrentPage(@i)">@i</a></span>
+						}
+						else
+						{
+							<span><a tabindex="0" class=" paginate_active" onclick="GetListByCurrentPage(@i)">@i</a></span>
+						}
+					}
+				}
+			}
+		</div>
+	</div>
+</div>
+<script>
+	function DeleteUser(id) {
+		//var productId = $(this).data('id');
+
+		bootbox.confirm({
+			message: 'Bạn có chắc chắn muốn xóa sản phẩm này?',
+			buttons: {
+				confirm: {
+					label: 'Xóa',
+					className: 'btn-danger'
+				},
+				cancel: {
+					label: 'Hủy',
+					className: 'btn-secondary'
+				}
+			},
+			callback: function (result) {
+				if (result) {
+					// Nếu người dùng xác nhận xóa
+					// Gửi yêu cầu xóa sản phẩm với productId lên server
+
+					// Chuyển hướng về trang danh sách sản phẩm
+					$.ajax({
+						type: "GET",
+						url: '/User/Delete?Id=' + id,
+						data: "",
+						contentType: 'application/json; charset=utf-8',
+						success: function (data) {
+							$.notify(data.message);
+							setTimeout(
+								function () {
+									window.location.reload();
+								}, 5000);
+						},
+						Error: function (data) {
+							$.notify(data.message);
+						}
+					});
+				}
+			}
+		});
+	}
+	function GetListByCurrentPage(id) {
+		$.ajax({
+			type: "GET",
+			url: "../User/UserPaging?currentPage=" + id + "&searchByUserName=" + $("#searchByUserName").val(),
+			data: "",
+			contentType: 'application/json; charset=utf-8',
+			success: function (data) {
+				console.log(data);
+				$("#dataTable").html(data);
+			},
+			Error: function (data) {
+				console.log(data);
+			}
+		});
+	}
+
+	function DeleteAll() {
+		var listData = $("lstCode").val();
+		bootbox.confirm({
+			message: "bạn có muốn xóa không ?",
+			butttons: {
+
+				confirm: {
+					label: 'Có',
+					className: 'btn-success'
+				},
+				cancel: {
+					label: 'Không',
+					className: 'btn-danger'
+				}
+
+			},
+			callback : function(result){
+				if(result){
+					$.ajax({
+						type : "GET",
+						url: '/User/DeleteAll?code=' + listData,
+						data: "",
+						contentType: 'application/json; charset=utf-8',
+						success : function(data){
+							$.notify(data.message);
+							setTimeout(
+								function () {
+									window.location.reload();
+								}, 5000);
+						},
+						Error : function (data){
+							$.notify(data.message);
+						}
+					})
+				}
+			}
+		})
+	}
+	$(function () {
+		$('#selectAll').click(function () {
+			var val = [];
+			if ($(this).is(':checked')) {
+				$(".ads_Checkbox").prop("checked", true);
+				$(':checkbox:checked').each(function (i) {
+					if (i > 0) {
+						val[i - 1] = $(this).val();
+					}
+				});
+			}
+			else {
+				$(".ads_Checkbox").prop("checked", false);
+				val = [];
+			}
+			$("#lstCode").val(val);
+		});
+
+
+		$('.ads_Checkbox').click(function () {
+			var val = [];
+			$(':checkbox:checked').each(function (i) {
+				if ($('#selectAll').is(':checked')) {
+					if (i > 0) {
+						val[i - 1] = $(this).val();
+					}
+				} else {
+					val[i] = $(this).val();
+				}
+
+			});
+			$("#lstCode").val(val);
+		});
+
+
+	});
+</script>
